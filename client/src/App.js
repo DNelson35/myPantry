@@ -1,13 +1,22 @@
-import SignUp from "./pages/signUp";
-import LogIn from "./pages/logIn";
+import LogIn from './pages/LogIn';
+import Home from './pages/Home';
+import NavBar from './components/NavBar';
+import useUserContext from './hooks/useUserContext';
 import { Routes, Route } from 'react-router-dom'
+
 function App() {
+  const { user, setUser } = useUserContext()
+  console.log(user)
+
+  if (!user) return <LogIn setUser={setUser}/>
 
   return (
-    <Routes>
-      <Route path='/' element={<SignUp/>}/>
-      <Route path='/login' element={<LogIn/>}/>
-    </Routes>
+    <>
+      <NavBar/>
+      <Routes>
+        <Route path='/' element={<Home/>}/>
+      </Routes>
+    </>
   );
 }
 
