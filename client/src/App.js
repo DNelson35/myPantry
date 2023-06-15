@@ -6,7 +6,6 @@ import { Routes, Route } from 'react-router-dom'
 
 function App() {
   const { user, setUser } = useUserContext()
-  console.log(user)
 
   if (!user) return <LogIn setUser={setUser}/>
 
