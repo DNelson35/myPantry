@@ -4,7 +4,7 @@ import FormInput from './FormInput'
 function AuthForm({onLogIn, onSignUp, onChange, formInput}) {
     const [showLogin, setShowLogin] = useState(true)
     const login = ["username", "password"]
-    const signup = ["username", "password", "password_confirmation"]
+    const signup = ["username","name", "password", "password_confirmation"]
 
     const formContent = showLogin? login.map(label => <FormInput key={label} title={label} input={formInput[label]} onChange={onChange}/>): signup.map(label => <FormInput key={label} title={label} input={formInput[label]} onChange={onChange}/>)
 
