@@ -30,9 +30,13 @@ function NavBar() {
         </div>
         <div className=" w-full flex-grow lg:flex lg:items-center lg:w-auto lg:px-3 px-8">
             <div className="text-md font-bold text-white lg:flex-grow">
-                <NavLink
+                <NavLink to="/"
                 className="block mt-4 lg:inline-block lg:mt-0 hover:text-black px-4 py-2 mr-2">
                     Home
+                </NavLink>
+                <NavLink to='/items'
+                className="block mt-4 lg:inline-block lg:mt-0 hover:text-black px-4 py-2 mr-2">
+                    Items
                 </NavLink>
             </div>
             <div className="relative mx-auto text-gray-600 lg:block hidden">
