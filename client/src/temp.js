@@ -70,3 +70,27 @@
     //       }
     //     })
     //   }
+
+
+    // TODO : implement the following code on retriving item data 
+
+   
+  
+  
+    // const itemsList = items?.map(item => (
+    //   <div key={item.id}>
+    //     <h1>{item.name}</h1>
+    //     <img src={item.image_url} alt={item.name}/>
+    //     <ol>
+    //       <li><span>sku: </span>{item.sku}</li>
+    //       <li><span>description: </span>{item.description}</li>
+    //       <li><span>category: </span>{item.category}</li>
+    //     </ol>
+    //   </div>
+    // ))
+    
+    // return (
+    //   <div>
+    //    {itemsList}
+    //   </div>
+    // )
