@@ -9,4 +9,5 @@ class ItemWithExtraAttributesSerializer < ActiveModel::Serializer
     user_item = object.user_items.find_by(item_id: object.id)
     user_item.experation_date if user_item
   end
+
 end

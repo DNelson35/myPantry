@@ -6,9 +6,10 @@ function NavBar() {
     const {user, setUser} = useUserContext()
     const [search, setSearch] = useState('')
 
-    const onSearch = (e) => {
-        setSearch(e.target.value)
-    }
+    // TODO: set up search must change what is displayed or take user to a item page to show the item.
+    // const onSearch = (e) => {
+    //    console.log(search)
+    // }
 
     const onLogOut = () => {
         fetch('/logout', {
@@ -40,7 +41,7 @@ function NavBar() {
                 </NavLink>
             </div>
             <div className="relative mx-auto text-gray-600 lg:block hidden">
-                <input className="border-2 border-gray-300 bg-white h-10 pl-2 pr-8 rounded-lg text-sm focus:outline-blue-500" placeholder="Search" value={search} onChange={onSearch}/>
+                <input className="border-2 border-gray-300 bg-white h-10 pl-2 pr-8 rounded-lg text-sm focus:outline-blue-500" placeholder="Search" value={search} onChange={(e) =>  setSearch(e.target.value)}/>
                 <button type="submit" className="absolute right-0 top-0 mt-1 mr-2 text-xl">
                 🔍
                 </button>

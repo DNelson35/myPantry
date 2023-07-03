@@ -9,7 +9,7 @@ import Items from './pages/Items';
 function App() {
   const { user, setUser } = useUserContext()
 
-   const [items, setItems] = useState(null)
+   const [items, setItems] = useState([])
     
     useEffect(()=> {
       fetch('/items')
@@ -22,13 +22,50 @@ function App() {
       })
     }, [])
 
+    const updateItems = (userItem) => {
+      const itemId = userItem.item.id;
+    
+      if (!items.some(item => item.id === itemId)) {
+        setUser({
+          ...user,
+          user_items: [
+            ...user.user_items,
+            {
+              ...userItem.item,
+              id: userItem.id,
+              quantity: userItem.quantity,
+              experation_date: userItem.experation_date,
+              item_id: userItem.item.id
+            },
+          ],
+        });
+    
+        setItems([...items, userItem.item]);
+      } else {
+        setUser({
+          ...user,
+          user_items: [
+            ...user.user_items,
+            {
+              ...userItem.item,
+              id: userItem.id,
+              quantity: userItem.quantity,
+              experation_date: userItem.experation_date,
+              item_id: userItem.item.id,
+            },
+          ],
+        });
+      }
+    };
+    
+
   if (!user) return <LogIn setUser={setUser}/>
 
   return (
     <>
       <NavBar/>
       <Routes>
-        <Route path='/' element={<Home user={user}/>}/>
+        <Route path='/' element={<Home items={items} user={user} updateItems={updateItems}/>}/>
         <Route path='/items' element={<Items items={items}/>}/>
       </Routes>
     </>

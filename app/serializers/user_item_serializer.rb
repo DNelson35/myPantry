@@ -1,6 +1,6 @@
 class UserItemSerializer < ActiveModel::Serializer
-  attributes :quantity
+  attributes :id, :quantity, :experation_date
 
-  belongs_to :user
+  belongs_to :user 
   belongs_to :item
 end

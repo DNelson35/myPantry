@@ -1,10 +1,11 @@
 
 User.create(name: "test", username: "test", password: "123", password_confirmation: "123")
+User.create(name: "test2", username: "test2", password: "123", password_confirmation: "123")
 10.times do
     Item.create(
         name: Faker::Food.ingredient,
         sku: Faker::Barcode.ean,
-        description: Faker::Lorem.words(number: 5) ,
+        description: Faker::Lorem.sentence,
         category: 'general',
         image_url:Faker::Alphanumeric.alpha(number: 5)
     )

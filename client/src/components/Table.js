@@ -1,16 +1,20 @@
 import React from 'react'
+import { useLocation } from 'react-router-dom'
+import useUserContext from '../hooks/useUserContext'
 
 function Table({ data }) {
+  const location = useLocation()
+  const {user, setUser} = useUserContext()
 
-  const tableHeaders = data? Object.keys(data[0]).map(key => {
+  const tableHeaders = Object.keys(data[0]).map(key => {
     if (key !== 'image_url') {
      return <th scope="col" key={key} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{key}</th>
     } else {
       return null
-    }
-  }): null
+    } 
+  })
 
-  const tableRows = data?.map(item => (
+  const tableRows = data.map(item => (
     <tr key={item.id}>
       {Object.entries(item).map(set => {
         if(set[0] !== 'image_url') {
@@ -23,10 +27,25 @@ function Table({ data }) {
           return null
         }}
       )}
-      {/* <button>✏️</button>
-      <button>🗑️</button> */}
+      {(location.pathname === '/')?
+       <td className='px-6 py-4 whitespace-nowrap'>
+        <button className='pr-3'>✏️</button>
+        <button className='pl-3' onClick={() => onDelete(item)}>🗑️</button>
+      </td> 
+      : null}
     </tr>
   ))
+
+  const onDelete = (item) => { 
+    fetch(`/user_items/${item.id}`, {
+      method: 'DELETE',
+    })
+    .then(resp => {
+      if (resp.ok) {
+        setUser({...user, user_items: user.user_items.filter(currItem => currItem.id !== item.id)})
+      }
+    })
+  }
 
   return (
     <div className="flex flex-col">
@@ -37,6 +56,7 @@ function Table({ data }) {
               <thead className="bg-gray-50">
                 <tr>
                   {tableHeaders}
+                  { (location.pathname === '/')? <th className='px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider'>Edit</th>: null}
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">

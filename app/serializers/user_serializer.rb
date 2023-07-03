@@ -1,9 +1,6 @@
 class UserSerializer < ActiveModel::Serializer
-  attributes :id, :name, :total_items
+  attributes :id, :name
 
-  has_many :items, serializer: ItemWithExtraAttributesSerializer
-  
-  def total_items
-    object.user_items.sum(:quantity)
-  end
+  has_many :user_items, serializer: UserItemWithExtraAttributesSerializer
+
 end
