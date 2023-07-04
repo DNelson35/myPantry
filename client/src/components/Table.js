@@ -1,10 +1,9 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
-import useUserContext from '../hooks/useUserContext'
+import TableRow from './TableRow'
 
 function Table({ data }) {
   const location = useLocation()
-  const {user, setUser} = useUserContext()
 
   const tableHeaders = Object.keys(data[0]).map(key => {
     if (key !== 'image_url') {
@@ -14,38 +13,7 @@ function Table({ data }) {
     } 
   })
 
-  const tableRows = data.map(item => (
-    <tr key={item.id}>
-      {Object.entries(item).map(set => {
-        if(set[0] !== 'image_url') {
-          return(
-            <td className="px-6 py-4 whitespace-nowrap" key={`${set}`}>
-              <div className="text-sm text-gray-900">{set[1]}</div>
-            </td>
-          )
-        } else {
-          return null
-        }}
-      )}
-      {(location.pathname === '/')?
-       <td className='px-6 py-4 whitespace-nowrap'>
-        <button className='pr-3'>✏️</button>
-        <button className='pl-3' onClick={() => onDelete(item)}>🗑️</button>
-      </td> 
-      : null}
-    </tr>
-  ))
-
-  const onDelete = (item) => { 
-    fetch(`/user_items/${item.id}`, {
-      method: 'DELETE',
-    })
-    .then(resp => {
-      if (resp.ok) {
-        setUser({...user, user_items: user.user_items.filter(currItem => currItem.id !== item.id)})
-      }
-    })
-  }
+  const tableRows = data.map((itemObj, index) => <TableRow itemObj={itemObj} key={index}/>)
 
   return (
     <div className="flex flex-col">
