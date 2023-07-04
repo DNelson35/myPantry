@@ -34,6 +34,9 @@ function ItemInputForm({updateItems, items}) {
       }
 
     // TODO: import or figure out a diffrent method for creating unique keys for items
+    // also decide whether to remove sku form frontend and database. the thought is it can be replaced by the items id.
+
+    // TODO: IMPORTANT: I need to figure out a way for the item form to autofill if the item exist on the backend so users know that they do not need to fill the rest of the form. if the item does not exist yet then the user should be able to fill out the rest of the form.
   return (
     <form className='flex  justify-between h-20 w-full bg-slate-500 items-center mt-10 p-3' onSubmit={onItemFormSubmit}>
         <div>

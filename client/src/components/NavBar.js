@@ -6,7 +6,8 @@ function NavBar() {
     const {user, setUser} = useUserContext()
     const [search, setSearch] = useState('')
 
-    // TODO: set up search must change what is displayed or take user to a item page to show the item.
+    // TODO: set up search must change what is displayed or take user to a item page to show the item. most likely a filter that on search will display items that match the search i should add a filter button so you can search by name or category.
+    
     // const onSearch = (e) => {
     //    console.log(search)
     // }
