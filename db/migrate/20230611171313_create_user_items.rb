@@ -4,7 +4,7 @@ class CreateUserItems < ActiveRecord::Migration[7.0]
       t.belongs_to :user, null: false, foreign_key: true
       t.belongs_to :item, null: false, foreign_key: true
       t.integer :quantity
-      t.date :experation_date
+      t.date :expiration_date
 
       t.timestamps
     end

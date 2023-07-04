@@ -12,5 +12,5 @@ User.create(name: "test2", username: "test2", password: "123", password_confirma
 end
 
 10.times do |i|
-    UserItem.create(user_id: 1, item_id: i, quantity: Faker::Number.number(digits: 2), experation_date: Faker::Date.forward(days: 23))
+    UserItem.create(user_id: 1, item_id: i, quantity: Faker::Number.number(digits: 2), expiration_date: Faker::Date.forward(days: 23))
 end

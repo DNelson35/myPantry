@@ -12,27 +12,20 @@ class UserItemsController < ApplicationController
         render json: user_item, status: :found
     end
 
-    # def create 
-    #     user_item = UserItem.create(user_item_params)
-
-    #     render json: user_item, status: :created
-    # end
 
     def create 
         item = Item.find_by(name: params[:name])
         if item
-            user_item = @current_user.user_items.create!(item_id: item.id)
-            user_item.update!(user_item_params)
+           user_item = create_user_item(item)
             render json: user_item, status: :created
         else
-            new_item = @current_user.items.create(item_params)
-            user_item = @current_user.user_items.find_by(item_id: new_item.id)
-            user_item.update(user_item_params)
+            new_item = Item.create(item_params)
+           user_item = create_user_item(new_item)
             render json: user_item, status: :created
         end
     end
 
-
+# TODO: IMPORTANT: Add an update method so that the user can update the user_item
 
     def destroy
         user_item = find_user_item
@@ -54,8 +47,7 @@ class UserItemsController < ApplicationController
         params.permit(:name, :category, :image_url, :sku, :description)
     end
 
-    def user_item_params
-        params.permit(:experation_date, :quantity)
+    def create_user_item (item)
+        @current_user.user_items.create!(item_id: item.id, expiration_date: params[:expiration_date], quantity: params[:quantity])
     end
-
 end

@@ -28,7 +28,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_11_171313) do
     t.bigint "user_id", null: false
     t.bigint "item_id", null: false
     t.integer "quantity"
-    t.date "experation_date"
+    t.date "expiration_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["item_id"], name: "index_user_items_on_item_id"

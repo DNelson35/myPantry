@@ -34,7 +34,7 @@ function App() {
               ...userItem.item,
               id: userItem.id,
               quantity: userItem.quantity,
-              experation_date: userItem.experation_date,
+              expiration_date: userItem.expiration_date,
               item_id: userItem.item.id
             },
           ],
@@ -50,7 +50,7 @@ function App() {
               ...userItem.item,
               id: userItem.id,
               quantity: userItem.quantity,
-              experation_date: userItem.experation_date,
+              expiration_date: userItem.expiration_date,
               item_id: userItem.item.id,
             },
           ],

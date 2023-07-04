@@ -8,15 +8,16 @@ function ItemInputForm({updateItems, items}) {
         sku: '',
         description: '',
         category: '',
-        experation_date: '',
+        expiration_date: '',
         quantity: ''
       })
 
-    const {name, sku, description, category, experation_date, quantity} = itemInput
+    const {name, sku, description, category, expiration_date, quantity} = itemInput
 
     const updateItemInput = (e) => {
-        setItemInput({...itemInput, [e.target.name]: e.target.value})
-      }
+      setItemInput({ ...itemInput, [e.target.name]: e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1).toLowerCase()});
+    };
+
       const onItemFormSubmit = (e) => {
         e.preventDefault()
         fetch('/user_items', {
@@ -33,8 +34,7 @@ function ItemInputForm({updateItems, items}) {
         })
       }
 
-    // TODO: import or figure out a diffrent method for creating unique keys for items
-    // also decide whether to remove sku form frontend and database. the thought is it can be replaced by the items id.
+      console.log(itemInput);
 
     // TODO: IMPORTANT: I need to figure out a way for the item form to autofill if the item exist on the backend so users know that they do not need to fill the rest of the form. if the item does not exist yet then the user should be able to fill out the rest of the form.
   return (
@@ -43,7 +43,7 @@ function ItemInputForm({updateItems, items}) {
           <label>name</label>
           <input name='name' value={name} list='items' onChange={updateItemInput}></input>
           <datalist id='items'>
-            {items.map(item => <option value={item.name} key={Math.random() * 10000}/>)}
+            {items.map(item => <option value={item.name} key={item.id}/>)}
           </datalist>
         </div>
         <div>
@@ -63,12 +63,12 @@ function ItemInputForm({updateItems, items}) {
             <option>Bag item</option>
             <option>Drink item</option>
             <option>Bottle item</option>
-            <option>seasoning</option>
+            <option>Seasoning</option>
           </select>
         </div>
         <div>
           <label>expiration Date</label>
-          <input name='experation_date' value={experation_date} onChange={updateItemInput}></input>
+          <input name='expiration_date' value={expiration_date} onChange={updateItemInput}></input>
         </div>
         <div>
           <label>quantity</label>
