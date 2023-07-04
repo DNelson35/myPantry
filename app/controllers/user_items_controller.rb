@@ -21,8 +21,8 @@ class UserItemsController < ApplicationController
     def create 
         item = Item.find_by(name: params[:name])
         if item
-            user_item = @current_user.user_items.create(item_id: item.id)
-            user_item.update(user_item_params)
+            user_item = @current_user.user_items.create!(item_id: item.id)
+            user_item.update!(user_item_params)
             render json: user_item, status: :created
         else
             new_item = @current_user.items.create(item_params)
@@ -31,6 +31,7 @@ class UserItemsController < ApplicationController
             render json: user_item, status: :created
         end
     end
+
 
 
     def destroy

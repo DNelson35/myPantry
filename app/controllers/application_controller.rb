@@ -3,6 +3,7 @@ class ApplicationController < ActionController::API
     
     rescue_from ActiveRecord::RecordInvalid, with: :render_invalid
     rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
+    rescue_from ActiveModel::ValidationError, with: :render_invalid
 
     before_action :authorize
 
