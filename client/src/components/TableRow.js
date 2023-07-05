@@ -41,16 +41,11 @@ function TableRow({itemObj}) {
   //   }
   //  })
 
-  const tableData = Object.entries(itemObj).map(set => {
-    if(set[0] !== 'image_url'){
-        return (
-            <td className="px-6 py-4 whitespace-nowrap" key={`${set}`}>
-                <div className="text-sm text-gray-900">{set[1]}</div>
-            </td> 
-        )
-    }
-    return null
-  })
+  const tableData = Object.entries(itemObj).map(set => (
+    <td className="px-6 py-4 whitespace-nowrap" key={`${set}`}>
+        <div className="text-sm text-gray-900">{set[1]}</div>
+    </td> 
+  ))
 
    const onDelete = (itemObj) => { 
     fetch(`/user_items/${itemObj.id}`, {

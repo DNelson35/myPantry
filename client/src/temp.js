@@ -35,3 +35,8 @@
     //     });
     //   }
     // };
+
+    //  form item input working code replaced with code to autofill keep untill tested.
+     // const updateItemInput = (e) => {
+    //   setItemInput({ ...itemInput, [e.target.name]: e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1).toLowerCase()});
+    // };

@@ -5,17 +5,29 @@ function ItemInputForm({updateItems, items}) {
 
     const [itemInput, setItemInput] = useState({
         name: '',
-        sku: '',
         description: '',
         category: '',
         expiration_date: '',
         quantity: ''
       })
 
-    const {name, sku, description, category, expiration_date, quantity} = itemInput
+    const {name, description, category, expiration_date, quantity} = itemInput
 
     const updateItemInput = (e) => {
-      setItemInput({ ...itemInput, [e.target.name]: e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1).toLowerCase()});
+      const { name, value } = e.target;
+      setItemInput({ ...itemInput, [name]: value });
+    
+      // Check if the selected name matches an item from the datalist
+      const selectedItem = items.find(item => item.name === value);
+      if (selectedItem) {
+        const { description, category} = selectedItem;
+    
+        setItemInput(prevState => ({
+          ...prevState,
+          description: description || '',
+          category: category || '',
+        }));
+      }
     };
 
       const onItemFormSubmit = (e) => {
@@ -32,6 +44,13 @@ function ItemInputForm({updateItems, items}) {
             resp.json().then(userItem => updateItems(userItem))
           }
         })
+        setItemInput({
+          name: '',
+          description: '',
+          category: '',
+          expiration_date: '',
+          quantity: ''
+        })
       }
 
     // TODO: IMPORTANT: I need to figure out a way for the item form to autofill if the item exist on the backend so users know that they do not need to fill the rest of the form. if the item does not exist yet then the user should be able to fill out the rest of the form.
@@ -43,10 +62,6 @@ function ItemInputForm({updateItems, items}) {
           <datalist id='items'>
             {items.map(item => <option value={item.name} key={item.id}/>)}
           </datalist>
-        </div>
-        <div>
-          <label>sku</label>
-          <input name='sku' value={sku} onChange={updateItemInput}></input>
         </div>
         <div>
           <label>description</label>
