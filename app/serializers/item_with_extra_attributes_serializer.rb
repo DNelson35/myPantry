@@ -1,5 +1,5 @@
 class ItemWithExtraAttributesSerializer < ActiveModel::Serializer
-  attributes :id, :name, :sku, :description, :category, :image_url, :quantity, :expiration_date
+  attributes :id, :name, :description, :category, :quantity, :expiration_date
 
   def quantity
     user_item = object.user_items.find_by(item_id: object.id)

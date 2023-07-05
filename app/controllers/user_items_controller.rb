@@ -44,7 +44,7 @@ class UserItemsController < ApplicationController
     end
 
     def item_params
-        params.permit(:name, :category, :image_url, :sku, :description)
+        params.permit(:name, :category, :description)
     end
 
     def create_user_item (item)

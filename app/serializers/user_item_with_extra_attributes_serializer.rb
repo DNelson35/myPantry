@@ -1,5 +1,5 @@
 class UserItemWithExtraAttributesSerializer < ActiveModel::Serializer
-  attributes :id, :name, :category, :description, :quantity, :expiration_date, :item_id, :image_url,
+  attributes :id, :name, :category, :description, :quantity, :expiration_date, :item_id
 
   def item_id
     object.item.id
@@ -11,10 +11,6 @@ class UserItemWithExtraAttributesSerializer < ActiveModel::Serializer
 
   def category
     object.item.category
-  end
-
-  def image_url
-    object.item.image_url
   end
 
   def description
