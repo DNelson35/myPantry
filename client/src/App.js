@@ -9,8 +9,13 @@ import Items from './pages/Items';
 function App() {
   const { user, setUser } = useUserContext()
 
-   const [items, setItems] = useState([])
+  const [items, setItems] = useState([])
+  const [filteredItems, setFilteredItems] = useState()
+  const [search, setSearch] = useState('')
+  const [itemSearch, setItemSearch] = useState('')
+  const [filterItemsList, setFilterItemsList] = useState()
     
+
     useEffect(()=> {
       fetch('/items')
       .then(resp => {
@@ -22,51 +27,57 @@ function App() {
       })
     }, [])
 
+
     const updateItems = (userItem) => {
       const itemId = userItem.item.id;
     
-      if (!items.some(item => item.id === itemId)) {
-        setUser({
-          ...user,
-          user_items: [
-            ...user.user_items,
-            {
-              ...userItem.item,
-              id: userItem.id,
-              quantity: userItem.quantity,
-              expiration_date: userItem.expiration_date,
-              item_id: userItem.item.id
-            },
-          ],
-        });
+      const updatedUserItems = [
+        ...user.user_items,
+        {
+          ...userItem.item,
+          id: userItem.id,
+          quantity: userItem.quantity,
+          expiration_date: userItem.expiration_date,
+          item_id: userItem.item.id
+        },
+      ];
     
-        setItems([...items, userItem.item]);
-      } else {
-        setUser({
-          ...user,
-          user_items: [
-            ...user.user_items,
-            {
-              ...userItem.item,
-              id: userItem.id,
-              quantity: userItem.quantity,
-              expiration_date: userItem.expiration_date,
-              item_id: userItem.item.id,
-            },
-          ],
-        });
+      const updatedItems = items.some(item => item.id === itemId)
+        ? [...items]
+        : [...items, userItem.item];
+    
+      setUser({
+        ...user,
+        user_items: updatedUserItems,
+      });
+    
+      setItems(updatedItems);
+    }
+
+    useEffect(() => {
+      if(user && search === ''){
+        setFilteredItems(user.user_items);
+      } else if(user) {
+        setFilteredItems(user.user_items.filter(item => item.name.toLowerCase().includes(search.toLowerCase())))
       }
-    };
-    
+    },[search, user])
+
+    useEffect(() => {
+      if(items && itemSearch === ''){
+        setFilterItemsList(items)
+      } else if(items){
+        setFilterItemsList(items.filter(item => item.name.toLowerCase().includes(itemSearch.toLowerCase())))
+      }
+    },[itemSearch, items])
 
   if (!user) return <LogIn setUser={setUser}/>
 
   return (
     <>
-      <NavBar/>
+      <NavBar search={search} setSearch={setSearch} itemSearch={itemSearch} setItemSearch={setItemSearch}/>
       <Routes>
-        <Route path='/' element={<Home items={items} user={user} updateItems={updateItems}/>}/>
-        <Route path='/items' element={<Items items={items}/>}/>
+        <Route path='/' element={<Home items={items} search={search} user={user} updateItems={updateItems} filteredItems={filteredItems}/>}/>
+        <Route path='/items' element={<Items items={filterItemsList}/>}/>
       </Routes>
     </>
   );

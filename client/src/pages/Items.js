@@ -4,7 +4,7 @@ import Table from '../components/Table'
 function Items({ items }) {
   return (
     <div>
-        <Table data={items}/>
+        {items.length > 0 ? <Table data={items} /> : null}
     </div>
   )
 }

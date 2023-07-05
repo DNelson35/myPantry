@@ -3,6 +3,8 @@ import useUserContext from '../hooks/useUserContext'
 
 function TableRow({itemObj}) {
     // TODO: maybe create a table data component.
+
+    // TODO: set up the update functionality most is commented out. 
     const location = useLocation()
     const {user, setUser} = useUserContext()
     // const [isEditable, setIsEditable] = useState(false)
