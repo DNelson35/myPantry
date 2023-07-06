@@ -1,53 +1,79 @@
 import { useLocation } from 'react-router-dom'
+import { useState } from 'react'
 import useUserContext from '../hooks/useUserContext'
 
 function TableRow({itemObj}) {
-    // TODO: maybe create a table data component.
+  // TODO: maybe create a table data component.
 
-    // TODO: set up the update functionality most is commented out. 
-    const location = useLocation()
-    const {user, setUser} = useUserContext()
-    // const [isEditable, setIsEditable] = useState(false)
 
-    // const [updateForm, setUpdateForm] = useState({
-    //   quantity: '',
-    //   expiration_date: ''
-    // })
+  const location = useLocation()
+  const {user, setUser} = useUserContext()
+  const [isEditable, setIsEditable] = useState(false)
 
-    // const onChange = (e) => {
-    //   setUpdateForm({...updateForm, [e.target.name]: e.target.value})
-    // }
+  const [updateForm, setUpdateForm] = useState({
+    quantity: '',
+    expiration_date: ''
+  })
 
-    // adding this made it where my validations fail every item must fix
 
-  //  const tableData = Object.entries(itemObj).map(set => {
-  //   if(set[0] !== 'image_url'){
-  //     if(isEditable &&  ['quantity', 'expiration_date'].includes(set[0])){
-  //       return(
-  //         <td className="px-6 py-4 whitespace-nowrap" key={`${set}`}>
-  //           <form>
-  //             <input type="text" className='border border-blue-400' placeholder={set[1]} name={set[0]} onChange={onChange}/>
-  //             <button type='submit'></button>
-  //           </form>
-  //         </td>
-  //       )
-  //     } else {
-  //       return(
-  //         <td className="px-6 py-4 whitespace-nowrap" key={`${set}`}>
-  //             <div className="text-sm text-gray-900">{set[1]}</div>
-  //         </td>
-  //       ) 
-  //     }
-  //   }
-  //  })
+  const onChange = (e) => {
+    setUpdateForm({...updateForm, [e.target.name]: e.target.value})
+  }
 
-  const tableData = Object.entries(itemObj).map(set => (
-    <td className="px-6 py-4 whitespace-nowrap" key={`${set}`}>
-        <div className="text-sm text-gray-900">{set[1]}</div>
-    </td> 
-  ))
+  const updateUserItem = (item) => {
+    setUser({...user, user_items: user.user_items.map(userItem => {
+      if(userItem.id === item.id){
+        return(item)
+      } else {
+        return userItem
+      }
+    })})
+  }
 
-   const onDelete = (itemObj) => { 
+  const onSubmit = (e) => {
+    e.preventDefault()
+
+    const updatedForm = {
+      quantity: updateForm.quantity || itemObj.quantity,
+      expiration_date: updateForm.expiration_date || itemObj.expiration_date,
+    };
+
+    fetch(`/user_items/${itemObj.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(updatedForm),
+    })
+    .then(resp => {
+      if(resp.ok){
+        resp.json().then(item => updateUserItem(item))
+      }
+    })
+    setIsEditable(false)
+  }
+    
+  const tableData = Object.entries(itemObj).map(set => {
+      if(isEditable &&  ['quantity', 'expiration_date'].includes(set[0])){
+        return(
+          <td className="px-6 py-4 whitespace-nowrap" key={`${set}`}>
+            <form onSubmit={onSubmit}>
+              <input type="text" className='border border-blue-400' placeholder={set[1]} name={set[0]} value={updateForm[set[0]]}onChange={onChange}/>
+              <button type='submit'></button>
+            </form>
+          </td>
+        )
+      } else {
+        return(
+          <td className="px-6 py-4 whitespace-nowrap" key={`${set}`}>
+              <div className="text-sm text-gray-900">{set[1]}</div>
+          </td>
+        )
+      }
+    }
+  )
+
+  const onDelete = (itemObj) => { 
     fetch(`/user_items/${itemObj.id}`, {
       method: 'DELETE',
     })
@@ -61,14 +87,14 @@ function TableRow({itemObj}) {
   
   return (
     <tr>
-        {tableData}
-        {(location.pathname === '/')?
-            <td className='px-6 py-4 whitespace-nowrap'>
-                <button className='pr-3'>✏️</button>
-                <button className='pl-3' onClick={() => onDelete(itemObj)}>🗑️</button>
-            </td>
-            : null
-        }
+      {tableData}
+      {(location.pathname === '/')?
+        <td className='px-6 py-4 whitespace-nowrap'>
+            <button className='pr-3' onClick={() => setIsEditable(!isEditable)}>✏️</button>
+            <button className='pl-3' onClick={() => onDelete(itemObj)}>🗑️</button>
+        </td>
+        : null
+      }
     </tr>
   )
 }

@@ -15,7 +15,6 @@ function App() {
   const [itemSearch, setItemSearch] = useState('')
   const [filterItemsList, setFilterItemsList] = useState()
     
-
     useEffect(()=> {
       fetch('/items')
       .then(resp => {
@@ -29,26 +28,15 @@ function App() {
 
 
     const updateItems = (userItem) => {
-      const itemId = userItem.item.id;
-    
-      const updatedUserItems = [
-        ...user.user_items,
-        {
-          ...userItem.item,
-          id: userItem.id,
-          quantity: userItem.quantity,
-          expiration_date: userItem.expiration_date,
-          item_id: userItem.item.id
-        },
-      ];
-    
-      const updatedItems = items.some(item => item.id === itemId)
+      const {quantity, expiration_date, id, item_id, ...itemProps} = userItem
+      
+      const updatedItems = items.some(item => item.id === item_id)
         ? [...items]
-        : [...items, userItem.item];
-    
+        : [...items, {id: item_id, ...itemProps}]
+
       setUser({
         ...user,
-        user_items: updatedUserItems,
+        user_items: [...user.user_items, userItem],
       });
     
       setItems(updatedItems);

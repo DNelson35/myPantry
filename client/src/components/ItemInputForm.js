@@ -15,7 +15,7 @@ function ItemInputForm({updateItems, items}) {
 
     const updateItemInput = (e) => {
       const { name, value } = e.target;
-      setItemInput({ ...itemInput, [name]: value });
+      setItemInput({ ...itemInput, [name]: value.charAt(0).toUpperCase() + value.slice(1).toLowerCase() });
     
       // Check if the selected name matches an item from the datalist
       const selectedItem = items.find(item => item.name === value);
@@ -53,7 +53,6 @@ function ItemInputForm({updateItems, items}) {
         })
       }
 
-    // TODO: IMPORTANT: I need to figure out a way for the item form to autofill if the item exist on the backend so users know that they do not need to fill the rest of the form. if the item does not exist yet then the user should be able to fill out the rest of the form.
   return (
     <form className='flex  justify-between h-20 w-full bg-slate-500 items-center mt-10 p-3' onSubmit={onItemFormSubmit}>
         <div>
