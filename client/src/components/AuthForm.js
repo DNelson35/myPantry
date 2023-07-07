@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import FormInput from './FormInput'
 
-function AuthForm({onLogIn, onSignUp, onChange, formInput}) {
+function AuthForm({onLogIn, onSignUp, onChange, formInput, error, setError}) {
     const [showLogin, setShowLogin] = useState(true)
     const login = ["username", "password"]
     const signup = ["username","name", "password", "password_confirmation"]
@@ -20,8 +20,12 @@ function AuthForm({onLogIn, onSignUp, onChange, formInput}) {
                   </button>
                   <p className='pt-2'>
                     No account? 
-                    <button className="text-blue-500 hover:text-blue-700 pl-3" type='button' onClick={() => setShowLogin(false)}>Sign up</button>
+                    <button className="text-blue-500 hover:text-blue-700 pl-3" type='button' onClick={() =>{
+                      setShowLogin(false)
+                      setError(null)
+                    }}>Sign up</button>
                   </p>
+                  {error? <p className='text-red-500'>{error}</p> : null}
                </>
               : 
                 <>
@@ -30,8 +34,12 @@ function AuthForm({onLogIn, onSignUp, onChange, formInput}) {
                   </button>
                   <p className='pt-2'>
                     Have an account? 
-                    <button className="text-blue-500 hover:text-blue-700 pl-3" type='button' onClick={() => setShowLogin(true)}>Log In</button>
+                    <button className="text-blue-500 hover:text-blue-700 pl-3" type='button' onClick={() => {
+                      setShowLogin(true)
+                      setError(null)
+                      }}>Log In</button>
                   </p>
+                  {error? <p className='text-red-500'>{error}</p>: null}
                 </>
               }
             </form>

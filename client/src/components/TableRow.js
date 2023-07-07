@@ -3,9 +3,7 @@ import { useState } from 'react'
 import useUserContext from '../hooks/useUserContext'
 
 function TableRow({itemObj}) {
-  // TODO: maybe create a table data component.
-
-
+  
   const location = useLocation()
   const {user, setUser} = useUserContext()
   const [isEditable, setIsEditable] = useState(false)
@@ -52,6 +50,17 @@ function TableRow({itemObj}) {
     })
     setIsEditable(false)
   }
+
+  const onDelete = (itemObj) => { 
+    fetch(`/user_items/${itemObj.id}`, {
+      method: 'DELETE',
+    })
+    .then(resp => {
+      if (resp.ok) {
+        setUser({...user, user_items: user.user_items.filter(currItem => currItem.id !== itemObj.id)})
+      }
+    })
+  }
     
   const tableData = Object.entries(itemObj).map(set => {
       if(isEditable &&  ['quantity', 'expiration_date'].includes(set[0])){
@@ -73,18 +82,6 @@ function TableRow({itemObj}) {
     }
   )
 
-  const onDelete = (itemObj) => { 
-    fetch(`/user_items/${itemObj.id}`, {
-      method: 'DELETE',
-    })
-    .then(resp => {
-      if (resp.ok) {
-        setUser({...user, user_items: user.user_items.filter(currItem => currItem.id !== itemObj.id)})
-      }
-    })
-  }
-
-  
   return (
     <tr>
       {tableData}

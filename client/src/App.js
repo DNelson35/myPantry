@@ -1,71 +1,58 @@
 import { useState, useEffect } from 'react';
-import LogIn from './pages/LogIn';
 import Home from './pages/Home';
 import NavBar from './components/NavBar';
 import useUserContext from './hooks/useUserContext';
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Items from './pages/Items';
+import LogIn from './pages/LogIn';
+import useSearch from './hooks/useSearch';
 
 function App() {
+  // TODO: write Readme
+  // TODO: write resume
+  // TODO: Record Video
+  // TODO: SCHEDUAL APPOINTEMENT FOR INSTURCTOR AND REVIEW
+  
   const { user, setUser } = useUserContext()
 
   const [items, setItems] = useState([])
-  const [filteredItems, setFilteredItems] = useState()
-  const [search, setSearch] = useState('')
-  const [itemSearch, setItemSearch] = useState('')
-  const [filterItemsList, setFilterItemsList] = useState()
+  const {filterItemsList, filteredItems, search, setSearch, itemSearch, setItemSearch} = useSearch(user, items)
+  const location = useLocation()
     
-    useEffect(()=> {
-      fetch('/items')
-      .then(resp => {
-        if (resp.ok){
-          resp.json().then(itemData => setItems(itemData))
-        } else {
-          resp.json().then(error => console.log(error))
-        }
-      })
-    }, [])
+  useEffect(()=> {
+    fetch('/items')
+    .then(resp => {
+      if (resp.ok){
+        resp.json().then(itemData => setItems(itemData))
+      } else {
+        resp.json().then(error => console.log(error.errors))
+      }
+    })
+  }, [])
 
 
-    const updateItems = (userItem) => {
-      const {quantity, expiration_date, id, item_id, ...itemProps} = userItem
-      
-      const updatedItems = items.some(item => item.id === item_id)
-        ? [...items]
-        : [...items, {id: item_id, ...itemProps}]
-
-      setUser({
-        ...user,
-        user_items: [...user.user_items, userItem],
-      });
+  const updateItems = (userItem) => {
+    const {quantity, expiration_date, id, item_id, ...itemProps} = userItem
     
-      setItems(updatedItems);
-    }
+    const updatedItems = items.some(item => item.id === item_id)
+      ? [...items]
+      : [...items, {id: item_id, ...itemProps}]
 
-    useEffect(() => {
-      if(user && search === ''){
-        setFilteredItems(user.user_items);
-      } else if(user) {
-        setFilteredItems(user.user_items.filter(item => item.name.toLowerCase().includes(search.toLowerCase())))
-      }
-    },[search, user])
-
-    useEffect(() => {
-      if(items && itemSearch === ''){
-        setFilterItemsList(items)
-      } else if(items){
-        setFilterItemsList(items.filter(item => item.name.toLowerCase().includes(itemSearch.toLowerCase())))
-      }
-    },[itemSearch, items])
-
-  if (!user) return <LogIn setUser={setUser}/>
+    setUser({
+      ...user,
+      user_items: [...user.user_items, userItem],
+    });
+  
+    setItems(updatedItems);
+  }
 
   return (
     <>
-      <NavBar search={search} setSearch={setSearch} itemSearch={itemSearch} setItemSearch={setItemSearch}/>
+      {location.pathname !== '/login' && <NavBar search={search} setSearch={setSearch} itemSearch={itemSearch} setItemSearch={setItemSearch} />}
       <Routes>
         <Route path='/' element={<Home items={items} search={search} user={user} updateItems={updateItems} filteredItems={filteredItems}/>}/>
         <Route path='/items' element={<Items items={filterItemsList}/>}/>
+        <Route path='/login' element={<LogIn setUser={setUser}/>}/>
       </Routes>
     </>
   );

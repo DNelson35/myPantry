@@ -1,11 +1,12 @@
 // import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import useUserContext from '../hooks/useUserContext'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 function NavBar({search, setSearch, itemSearch, setItemSearch}) {
     const {user, setUser} = useUserContext()
     const location = useLocation()
+    const navigate = useNavigate()
     
     const onLogOut = () => {
         fetch('/logout', {
@@ -14,10 +15,11 @@ function NavBar({search, setSearch, itemSearch, setItemSearch}) {
         .then(resp =>{
             if(resp.ok){
                 setUser(null)
+                navigate('/login')
             }
         })
     }
-
+    
   return (
     <nav className="flex items-center justify-between flex-wrap bg-slate-500 py-4 lg:px-12 shadow border-solid border-t-2 border-slate-500">
         <div className="flex justify-between lg:w-auto w-full lg:border-b-0 pl-6 pr-2 border-solid border-b-2 border-gray-300 pb-5 lg:pb-0">

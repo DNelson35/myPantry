@@ -1,17 +1,19 @@
 import React from 'react'
 import { useState } from 'react'
-import useUserContext from '../hooks/useUserContext'
+import { useNavigate } from 'react-router-dom'
 import AuthForm from '../components/AuthForm'
 
-function LogIn() {
+function LogIn({ setUser }) {
   const [formInput, setFormInput] = useState({
     username: '',
     password: '',
     password_confirmation: '',
   })
 
-  const {setUser} = useUserContext()
-  
+  const [error, setError] = useState(null)
+
+  const navigate = useNavigate()
+
   const onChange = (e) => {
     setFormInput({...formInput,[e.target.name]: e.target.value})
   }
@@ -28,9 +30,20 @@ function LogIn() {
     .then(resp =>{ 
       if (resp.ok){
         resp.json()
-        .then(user => setUser(user))
+        .then(user => {
+          setUser(user)
+          navigate('/')
+          console.clear()
+        })
       } else {
-        resp.json().then(err => console.log(err.errors))
+        resp.json().then(err =>{
+          setError(err.errors)
+          setFormInput({
+            username: '',
+            password: '',
+            password_confirmation: '',
+          })
+        })
       }
     })
   }
@@ -46,9 +59,20 @@ function LogIn() {
     })
     .then(resp => {
       if(resp.ok){
-        resp.json().then(user => setUser(user))
+        resp.json().then(user =>  {
+          setUser(user)
+          navigate('/')
+          console.clear()
+        })
       } else{
-        resp.json().then(err => console.log(err.errors))
+        resp.json().then(err => {
+          setError(err.errors)
+          setFormInput({
+            username: '',
+            password: '',
+            password_confirmation: '',
+          })
+        })
       }
     })
   }
@@ -60,6 +84,8 @@ function LogIn() {
       onLogIn={onLogInSubmit}
       onSignUp={onSignUpSubmit}
       formInput={formInput}  
+      error={error}
+      setError={setError}
     />
   )
 }
