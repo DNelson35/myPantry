@@ -3,7 +3,7 @@ User.create(name: "test", username: "test", password: "123", password_confirmati
 User.create(name: "test2", username: "test2", password: "123", password_confirmation: "123")
 10.times do
     Item.create(
-        name: Faker::Food.ingredient,
+        name: Faker::Food.ingredient.capitalize,
         description: Faker::Lorem.sentence,
         category: 'General',
     )
