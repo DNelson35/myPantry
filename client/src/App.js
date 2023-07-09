@@ -47,14 +47,14 @@ function App() {
   }
 
   return (
-    <>
+    <div className='overflow-x-hidden'>
       {location.pathname !== '/login' && <NavBar search={search} setSearch={setSearch} itemSearch={itemSearch} setItemSearch={setItemSearch} />}
       <Routes>
         <Route path='/' element={<Home items={items} search={search} user={user} updateItems={updateItems} filteredItems={filteredItems}/>}/>
         <Route path='/items' element={<Items items={filterItemsList}/>}/>
         <Route path='/login' element={<LogIn setUser={setUser}/>}/>
       </Routes>
-    </>
+    </div>
   );
 }
 
