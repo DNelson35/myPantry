@@ -46,6 +46,8 @@ function TableRow({itemObj}) {
     .then(resp => {
       if(resp.ok){
         resp.json().then(item => updateUserItem(item))
+      }else {
+        resp.json().then(err => alert(err.errors))
       }
     })
     setIsEditable(false)
