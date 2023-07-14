@@ -14,7 +14,7 @@ function App() {
   // TODO: SCHEDUAL APPOINTEMENT FOR INSTURCTOR AND REVIEW
   
   const { user, setUser } = useUserContext()
-
+ 
   const [items, setItems] = useState([])
   const {filterItemsList, filteredItems, search, setSearch, itemSearch, setItemSearch} = useSearch(user, items)
   const location = useLocation()
@@ -30,14 +30,25 @@ function App() {
     })
   }, [])
 
-
   const updateItems = (userItem) => {
     const {quantity, expiration_date, id, item_id, ...itemProps} = userItem
+    const item = items.find(item => item.id === item_id)
+    let updatedItems
     
-    const updatedItems = items.some(item => item.id === item_id)
-      ? [...items]
-      : [...items, {id: item_id, ...itemProps}]
-
+    if(item && item.users.some(itemUser => user.id === itemUser.id)){
+      updatedItems = [...items]
+    } else if(item){
+      updatedItems = items.map(currItem =>{
+        if(currItem.id === item.id){
+          return {...item, users: [...item.users, {id: user.id, name: user.name}]}
+        }else{
+          return currItem
+        }
+      } )
+    } else {
+      updatedItems = [...items, {id: item_id, ...itemProps, users: [{id: user.id, name: user.name}]}]
+    }
+    
     setUser({
       ...user,
       user_items: [...user.user_items, userItem],
@@ -50,8 +61,8 @@ function App() {
     <div className='overflow-x-hidden'>
       {location.pathname !== '/login' && <NavBar search={search} setSearch={setSearch} itemSearch={itemSearch} setItemSearch={setItemSearch} />}
       <Routes>
-        <Route path='/' element={<Home items={items} search={search} user={user} updateItems={updateItems} filteredItems={filteredItems}/>}/>
-        <Route path='/items' element={<Items items={filterItemsList}/>}/>
+        <Route path='/' element={<Home items={items} setItems={setItems} search={search} user={user} updateItems={updateItems} filteredItems={filteredItems}/>}/>
+        <Route path='/items' element={<Items filterItemsList={filterItemsList} items={items} setItems={setItems} />}/>
         <Route path='/login' element={<LogIn setUser={setUser}/>}/>
       </Routes>
     </div>
