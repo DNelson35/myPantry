@@ -63,6 +63,6 @@ class UserItemsController < ApplicationController
     end
 
     def render_with_extra(user_item, status)
-        render json: user_item, serializer: UserItemWithExtraAttributesSerializer, status: status
+        render json: user_item, status: status
     end
 end
