@@ -2,12 +2,11 @@ import React from 'react'
 import { useLocation } from 'react-router-dom'
 import TableRow from './TableRow'
 
-function Table({ data }) {
+function Table({ data, items, setItems }) {
   const location = useLocation()
-
   const tableHeaders = Object.keys(data[0]).map(key => <th scope="col" key={key} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">{key}</th>)
 
-  const tableRows = data.map((itemObj, index) => <TableRow itemObj={itemObj} key={index}/>)
+  const tableRows = data.map((itemObj, index) => <TableRow itemObj={itemObj} key={index} items={items} setItems={setItems}/>)
 
   return (
     <div className="flex flex-col">

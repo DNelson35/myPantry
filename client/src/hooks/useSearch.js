@@ -5,7 +5,7 @@ function useSearch(user, items) {
     const [search, setSearch] = useState('')
     const [itemSearch, setItemSearch] = useState('')
     const [filterItemsList, setFilterItemsList] = useState([])
-
+    
     useEffect(() => {
         if(user && search === ''){
           setFilteredItems(user.user_items);

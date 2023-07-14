@@ -1,10 +1,10 @@
 import React from 'react'
 import Table from '../components/Table'
 
-function Items({ items }) {
+function Items({ filterItemsList, items, setItems }) {
   return (
     <div>
-        {items.length > 0 ? <Table data={items} /> : null}
+        {filterItemsList.length > 0 ? <Table data={filterItemsList} items={items} setItems={setItems} /> : null}
     </div>
   )
 }
