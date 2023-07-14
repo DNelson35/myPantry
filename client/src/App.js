@@ -8,10 +8,6 @@ import LogIn from './pages/LogIn';
 import useSearch from './hooks/useSearch';
 
 function App() {
-  // TODO: write Readme
-  // TODO: write resume
-  // TODO: Record Video
-  // TODO: SCHEDUAL APPOINTEMENT FOR INSTURCTOR AND REVIEW
   
   const { user, setUser } = useUserContext()
  

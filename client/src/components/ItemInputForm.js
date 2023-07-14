@@ -13,10 +13,6 @@ function ItemInputForm({updateItems, items, errors, setErrors}) {
 
   const {name, description, category, expiration_date, quantity} = itemInput
 
-  useEffect(() =>{
-    setTimeout(() => setErrors(null),10000)
-  },[setErrors])
-
   const updateItemInput = (e) => {
     const { name, value } = e.target;
 
@@ -46,8 +42,9 @@ function ItemInputForm({updateItems, items, errors, setErrors}) {
     .then(resp => {
       if(resp.ok){
         resp.json().then(userItem => updateItems(userItem))
-      }else{
-        resp.json().then(err => setErrors(err))
+        setErrors([])
+      } else {
+        resp.json().then(err => setErrors(err.errors))
       }
     })
     setItemInput({
