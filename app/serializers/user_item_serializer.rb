@@ -1,6 +1,19 @@
 class UserItemSerializer < ActiveModel::Serializer
-  attributes :id, :quantity, :expiration_date
+  attributes :id, :name, :category, :description, :quantity, :expiration_date, :item_id
 
-  belongs_to :user 
-  belongs_to :item
+  def item_id
+    object.item.id
+  end
+
+  def name
+    object.item.name  
+  end
+
+  def category
+    object.item.category
+  end
+
+  def description
+    object.item.description
+  end
 end
