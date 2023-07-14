@@ -1,7 +1,7 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
-function ItemInputForm({updateItems, items, errors, setErrors}) {
+function ItemInputForm({updateItems, items, setErrors}) {
   
   const [itemInput, setItemInput] = useState({
     name: '',

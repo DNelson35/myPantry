@@ -76,7 +76,7 @@ function TableRow({itemObj, items, setItems}) {
   const tableData = Object.entries(itemObj).map(([key, value]) => {
     if (isEditable && ['quantity', 'expiration_date'].includes(key)) {
       return (
-        <td className="px-6 py-4 whitespace-nowrap" key={key}>
+        <td className="px-6 py-4 whitespace-nowrap" key={itemObj.description}>
           <form onSubmit={onSubmit}>
             <input
               type="text"
@@ -92,10 +92,10 @@ function TableRow({itemObj, items, setItems}) {
       );
     } else if (Array.isArray(value) && value) {
       return (
-        <td>
+        <td key={key}>
           <select>
             {value.map((user) => (
-              <option key={user.id}>{user.name}</option>
+              <option key={user.name}>{user.name}</option>
             ))}
           </select>
         </td>
