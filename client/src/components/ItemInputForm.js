@@ -1,8 +1,8 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-function ItemInputForm({updateItems, items}) {
-
+function ItemInputForm({updateItems, items, errors, setErrors}) {
+  
   const [itemInput, setItemInput] = useState({
     name: '',
     description: '',
@@ -12,6 +12,10 @@ function ItemInputForm({updateItems, items}) {
   })
 
   const {name, description, category, expiration_date, quantity} = itemInput
+
+  useEffect(() =>{
+    setTimeout(() => setErrors(null),10000)
+  },[setErrors])
 
   const updateItemInput = (e) => {
     const { name, value } = e.target;
@@ -43,7 +47,7 @@ function ItemInputForm({updateItems, items}) {
       if(resp.ok){
         resp.json().then(userItem => updateItems(userItem))
       }else{
-        resp.json().then(err => alert(err.errors))
+        resp.json().then(err => setErrors(err))
       }
     })
     setItemInput({
@@ -54,23 +58,23 @@ function ItemInputForm({updateItems, items}) {
       quantity: ''
     })
   }
-
+  
   return (
     <form className='flex  justify-between h-20 w-full bg-slate-500 items-center mt-10 p-3' onSubmit={onItemFormSubmit}>
       <div>
         <label>name</label>
-        <input name='name' value={name} list='items' onChange={updateItemInput} required/>
+        <input name='name' value={name} list='items' onChange={updateItemInput}  />
         <datalist id='items'>
           {items.map(item => <option value={item.name} key={item.id}/>)}
         </datalist>
       </div>
       <div>
         <label>description</label>
-        <input name='description' value={description} onChange={updateItemInput} required/>
+        <input name='description' value={description} onChange={updateItemInput} />
       </div>
       <div>
         <label>category</label>
-        <select type='dropdown' name='category' value={category} onChange={updateItemInput} required>
+        <select type='dropdown' name='category' value={category} onChange={updateItemInput} >
           <option value=''> --select-- </option>
           <option>General</option>
           <option>Canned good</option>
@@ -82,11 +86,11 @@ function ItemInputForm({updateItems, items}) {
       </div>
       <div>
         <label>expiration Date</label>
-        <input name='expiration_date' value={expiration_date} onChange={updateItemInput} required/>
+        <input name='expiration_date' value={expiration_date} onChange={updateItemInput} placeholder=' YYYY/MM/DD'  />
       </div>
       <div>
         <label>quantity</label>
-        <input name='quantity' value={quantity} onChange={updateItemInput} required/>
+        <input name='quantity' value={quantity} onChange={updateItemInput} />
       </div>
       <button type="submit" className='mr-10 rounded-full bg-blue-500 px-4 py-1 text-white transition duration-200 hover:bg-blue-600 active:bg-blue-700'>Save</button>
     </form>
