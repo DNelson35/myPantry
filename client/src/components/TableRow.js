@@ -16,10 +16,10 @@ function TableRow({itemObj, items, setItems}) {
     setUpdateForm({...updateForm, [e.target.name]: e.target.value})
   }
 
-  const updateUserItem = (item) => {
+  const updateUserItem = (data) => {
     setUser({...user, user_items: user.user_items.map(userItem => {
-      if(userItem.id === item.id){
-        return(item)
+      if(userItem.id === data.id){
+        return(data)
       } else {
         return userItem
       }
@@ -53,7 +53,7 @@ function TableRow({itemObj, items, setItems}) {
     })
     .then(resp => {
       if(resp.ok){
-        resp.json().then(item => updateUserItem(item))
+        resp.json().then(data =>  updateUserItem(data))
       }else {
         resp.json().then(err => alert(err.errors))
       }
@@ -75,8 +75,9 @@ function TableRow({itemObj, items, setItems}) {
 
   const tableData = Object.entries(itemObj).map(([key, value]) => {
     if (isEditable && ['quantity', 'expiration_date'].includes(key)) {
+      console.log(isEditable)
       return (
-        <td className="px-6 py-4 whitespace-nowrap" key={itemObj.description}>
+        <td className="px-6 py-4 whitespace-nowrap" key={key}>
           <form onSubmit={onSubmit}>
             <input
               type="text"
